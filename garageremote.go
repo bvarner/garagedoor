@@ -1,4 +1,4 @@
-package pigaragedoor
+package github.com/bvarner/pigaragedoor
 
 import (
 	"fmt"
