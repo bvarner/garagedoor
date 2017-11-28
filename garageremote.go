@@ -24,6 +24,7 @@ func buttonHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	log.Printf("Starting up...")
 	mutex = &sync.Mutex{}
 	
 	// Set the output pin to high, output.
