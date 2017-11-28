@@ -1,7 +1,6 @@
-//go:generate esc -o static.go static
-
-
 package main
+
+//go:generate esc -o static.go -prefix "static/" static
 
 import (
 	"net/http"
