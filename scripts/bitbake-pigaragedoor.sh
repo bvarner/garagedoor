@@ -24,3 +24,7 @@ sed -i 's|%PROJECT_DIR%|'$YOCTO_DIR'|g' conf/local.conf
 cat conf/local.conf
 cat conf/bblayers.conf
 bitbake pigaragedoor-image
+
+# zip the shared/tmp/deploy/images/raspberrypi/pigaragedoor-image-raspberrypi.rpi-sdimg
+cd shared/tmp/deploy/images/raspberrypi
+zip $YOCTO_DIR/pigaragedoor-image-raspberrypi.zip pigaragedoor-image-raspberrypi.rpi-sdimg
