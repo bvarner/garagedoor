@@ -5,9 +5,9 @@ package main
 import (
 	"net/http"
 	"sync"
-	"github.com/bvarner/go-rpigpio"	
-	"log"
+	"github.com/nathan-osman/go-rpigpio"	
 	"time"
+	"log"
 )
 
 var mutex *sync.Mutex
@@ -24,16 +24,16 @@ func buttonHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	log.Printf("Starting up...")
 	mutex = &sync.Mutex{}
 	
-	// Set the output pin to high, output.
+	// Open the output pin and set it high.
 	mutex.Lock()
 	var err error
-	pin, err = rpi.OpenWriteDefault(4, rpi.HIGH)
+	pin, err = rpi.OpenPin(4, rpi.OUT)
 	if err != nil {
 		log.Fatal("Unable to open GPIO pin: ", err)
 	}
+	pin.Write(rpi.HIGH);
 	defer pin.Close()
 	mutex.Unlock()
 
