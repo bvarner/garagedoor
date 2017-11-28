@@ -1,9 +1,12 @@
+//go:generate esc -o static.go static
+
+
 package main
 
 import (
 	"net/http"
 	"sync"
-	"github.com/bvarner/go-rpigpio"
+	"github.com/bvarner/go-rpigpio"	
 	"log"
 	"time"
 )
@@ -30,6 +33,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Unable to open GPIO pin: ", err)
 	}
+	defer pin.Close()
 	mutex.Unlock()
 
 	// Serve the static file system from 'esc'
