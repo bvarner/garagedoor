@@ -1,6 +1,18 @@
 language: c
 
+os: linux
+dist: trusty
+
 before_install:
 - sudo apt-get update -qq
 - sudo apt-get install -qq git build-essential chrpath diffstat libncurses5-dev texinfo python2.7
-
+- mkdir -p projects
+- mkdir -p shared/sources
+- mkdir -p shared/tmp
+- git clone -b rocko git://git.yoctoproject.org/poky.git poky-rocko
+- git clone -b rocko git://git.openembedded.org/meta-openembedded poky-rocko/meta-openembedded
+- git clone -b rocko git://git.yoctoproject.org/meta-security poky-rocko/meta-security
+- git clone -b rocko git://git.yoctoproject.org/meta-raspberrypi poky-rocko/meta-raspberrypi
+- git clone -b rocko https://github.com/bvarner/meta-bvarner-embedded.git poky-rocko/meta-bvarner-embedded
+- source poky-rocko/oe-init-build-env .
+- ls -alh
