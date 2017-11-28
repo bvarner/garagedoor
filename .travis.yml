@@ -12,6 +12,9 @@ before_install:
 - git clone -b rocko git://git.yoctoproject.org/meta-security poky-rocko/meta-security
 - git clone -b rocko git://git.yoctoproject.org/meta-raspberrypi poky-rocko/meta-raspberrypi
 - git clone -b rocko https://github.com/bvarner/meta-bvarner-embedded.git poky-rocko/meta-bvarner-embedded
+# Setup the shared dir.. .because I have these scripts setup to work on my local box as well...
+- mkdir -p shared/sources
+- mkdir -p shared/tmp
 # Setup the oe-init-build-env.
 - source poky-rocko/oe-init-build-env .
 # Customize the bblayers and the local.conf
@@ -23,4 +26,5 @@ before_install:
 - sed -i 's|%PROJECT_DIR%|'$YOCTO_DIR'|g' conf/local.conf
 - cat conf/local.conf
 - cat conf/bblayers.conf
+
 
