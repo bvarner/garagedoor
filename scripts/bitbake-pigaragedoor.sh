@@ -23,6 +23,17 @@ sed -i 's|%SHARED_DIR%|'$YOCTO_DIR'/shared|g' conf/local.conf
 sed -i 's|%PROJECT_DIR%|'$YOCTO_DIR'|g' conf/local.conf
 cat conf/local.conf
 cat conf/bblayers.conf
+bitbake glib-2.0-native
+bitbake autoconf-native
+bitbake automake-native
+bitbake bc-native
+bitbake binutils-cross-arm
+bitbake binutils-native
+bitbake bison-native
+bitbake bzip2-native
+bitbake dbus-native
+bitbake gcc-cross-arm
+bitbake linux
 bitbake pigaragedoor-image
 
 # zip the shared/tmp/deploy/images/raspberrypi/pigaragedoor-image-raspberrypi.rpi-sdimg
