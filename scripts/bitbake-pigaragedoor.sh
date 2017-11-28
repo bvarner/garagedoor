@@ -11,7 +11,9 @@ git clone -b rocko https://github.com/bvarner/meta-bvarner-embedded.git poky-roc
 mkdir -p shared/sources
 mkdir -p shared/tmp
 # Setup the oe-init-build-env.
+set +v
 source poky-rocko/oe-init-build-env .
+set -v
 # Customize the bblayers and the local.conf
 cp -f poky-rocko/meta-bvarner-embedded/project-templates/garage-door-opener/*.conf ./conf
 export YOCTO_DIR=`pwd`
@@ -21,4 +23,4 @@ sed -i 's|%SHARED_DIR%|'$YOCTO_DIR'/shared|g' conf/local.conf
 sed -i 's|%PROJECT_DIR%|'$YOCTO_DIR'|g' conf/local.conf
 cat conf/local.conf
 cat conf/bblayers.conf
-
+bitbake pigaragedoor-image
