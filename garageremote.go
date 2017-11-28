@@ -20,6 +20,7 @@ func buttonHandler(w http.ResponseWriter, r *http.Request) {
 	pin.Write(rpi.LOW);
 	time.Sleep(time.Second * 1)
 	pin.Write(rpi.HIGH);
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func main() {
