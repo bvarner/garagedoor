@@ -13,4 +13,7 @@ I've included bitbake recipes for building this as part of an embedded linux ima
 https://github.com/bvarner/meta-bvarner-embedded bitbake layer.
 
 ## Embedded Images
-For convenience, I'm working on a travis-ci build to produce the raspberrypi binary image.
+For raspberrypi (model a, b, B+, zero, zero-w) yocto images built from my meta-bvarner-embedded layer are available
+under the 'releases' of this repository.
+
+If you'd rather build your own directions are [in my bitbake layer repo|https://github.com/bvarner/meta-bvarner-embedded#the-fast-way-quick-n-dirty-script]
