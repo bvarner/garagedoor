@@ -1,6 +1,11 @@
 // Your printers nozzle diameter.
 nozzle_diameter = 0.4;
 
+// Set 1 to render the bottom
+bottom = 1;
+// Set to 1 to render the lid.
+lid = 1;
+
 // Enable / disable the 'hanger' tab. 1 adds the tab. 0 removes it.
 hanger = 1;
 
@@ -90,85 +95,89 @@ module lid_screw_opening(lid_thickness) {
                 cylinder(r = 10, lid_thickness * 10);
 }
 
-color("lightgreen")
-union() {
-    difference() {
-        cube([length, width, lower_part_height]);
-        translate([wall_thickness, wall_thickness, 1])
-            cube([length - (wall_thickness * 2), width - (wall_thickness * 2), lower_part_height - 1]);
+if (bottom == 1) {
+    color("lightgreen")
+    union() {
+        difference() {
+            cube([length, width, lower_part_height]);
+            translate([wall_thickness, wall_thickness, 1])
+                cube([length - (wall_thickness * 2), width - (wall_thickness * 2), lower_part_height - 1]);
+            
+            // Recess for top cover
+            translate([wall_thickness / 2, wall_thickness / 2, lower_part_height - lid_thickness])
+                cube([length - wall_thickness, width - wall_thickness, lid_thickness]);
+            
+            // Raspberry pi power opening
+            translate([wall_thickness + sd_card_clearance + 50, 0, 1])
+                pi_usb_opening(pi_standoff);
+            
+            // Subtraction to expose relay contacts
+            translate([length - wall_thickness - 12, 0, 1 + relay_standoff + 2]) // thickness of the board
+                cube([12 + wall_thickness, width, lower_part_height - (1 + relay_standoff + 2)]);
+            
+            
+        };
+        translate([wall_thickness + sd_card_clearance, wall_thickness + 1, 1])
+            pi_supports(pi_standoff);
+        translate([wall_thickness + 28, wall_thickness + 1, 1])
+            relay_supports(relay_standoff);
         
-        // Recess for top cover
-        translate([wall_thickness / 2, wall_thickness / 2, lower_part_height - lid_thickness])
-            cube([length - wall_thickness, width - wall_thickness, lid_thickness]);
-        
-        // Raspberry pi power opening
-        translate([wall_thickness + sd_card_clearance + 50, 0, 1])
-            pi_usb_opening(pi_standoff);
-        
-        // Subtraction to expose relay contacts
-        translate([length - wall_thickness - 12, 0, 1 + relay_standoff + 2]) // thickness of the board
-            cube([12 + wall_thickness, width, lower_part_height - (1 + relay_standoff + 2)]);
-        
-        
-    };
-    translate([wall_thickness + sd_card_clearance, wall_thickness + 1, 1])
-        pi_supports(pi_standoff);
-    translate([wall_thickness + 28, wall_thickness + 1, 1])
-        relay_supports(relay_standoff);
-    
-    // Top cover screw receivers
-    translate([wall_thickness, wall_thickness, lower_part_height - lid_thickness])
-        lid_screw_receiver(12);
-    translate([length - wall_thickness - 35 - 4, wall_thickness, lower_part_height - lid_thickness])
-        lid_screw_receiver(12);
-    translate([wall_thickness, width - wall_thickness, lower_part_height - lid_thickness])
-        rotate([0, 0, 180])
-            translate([-4, 0, 0])
-                lid_screw_receiver(12);
-    translate([length - wall_thickness - 35 - 4, width - wall_thickness, lower_part_height - lid_thickness])
-        rotate([0, 0, 180])
-            translate([-4, 0, 0])
-                lid_screw_receiver(12);
-        
-    // Add a 'hanging tab'
-    if (hanger > 0) {
-        hull() {
-            translate([(length / 2) - 20, width, 0])
-                cylinder(r = 20, 1);
-            translate([(length / 2) + 20, width, 0])
-                cylinder(r = 20, 1);
+        // Top cover screw receivers
+        translate([wall_thickness, wall_thickness, lower_part_height - lid_thickness])
+            lid_screw_receiver(12);
+        translate([length - wall_thickness - 35 - 4, wall_thickness, lower_part_height - lid_thickness])
+            lid_screw_receiver(12);
+        translate([wall_thickness, width - wall_thickness, lower_part_height - lid_thickness])
+            rotate([0, 0, 180])
+                translate([-4, 0, 0])
+                    lid_screw_receiver(12);
+        translate([length - wall_thickness - 35 - 4, width - wall_thickness, lower_part_height - lid_thickness])
+            rotate([0, 0, 180])
+                translate([-4, 0, 0])
+                    lid_screw_receiver(12);
+            
+        // Add a 'hanging tab'
+        if (hanger > 0) {
+            hull() {
+                translate([(length / 2) - 20, width, 0])
+                    cylinder(r = 20, 1);
+                translate([(length / 2) + 20, width, 0])
+                    cylinder(r = 20, 1);
+            }
         }
     }
 }
 
-// The lid
-color("lightblue")
-translate([100, 0, 0])
-difference() {
-    union() {
-        translate([wall_thickness / 2, wall_thickness / 2, 0])
-            cube([length - (wall_thickness / 2) - 12, width - wall_thickness, lid_thickness]);
-        
-        // Clamp  to hold the relay board in place.
-        translate([length - wall_thickness - 35, wall_thickness + nozzle_diameter, lid_thickness])
-            cube([35 - 12, width - (wall_thickness * 2) - (nozzle_diameter * 2),  lower_part_height - (1 + relay_standoff + 2 + lid_thickness)]);
-    }
-    translate([length - wall_thickness - 35, wall_thickness + nozzle_diameter + 2.5, lid_thickness])
-        cube([35 - 12, width - ((wall_thickness + nozzle_diameter + 2.5) * 2), lower_part_height - (1 + relay_standoff + 2 + lid_thickness)]);
-    
-        // Top cover screw receivers
-    translate([wall_thickness, wall_thickness, 0])
-        lid_screw_opening(lid_thickness);
-    translate([length - wall_thickness - 35 - 4, wall_thickness, 0])
-        lid_screw_opening(lid_thickness);
-    translate([wall_thickness, width - wall_thickness, 0])
-        rotate([0, 0, 180])
-            translate([-4, 0, 0])
-        lid_screw_opening(lid_thickness);
-    translate([length - wall_thickness - 35 - 4, width - wall_thickness, 0])
-        rotate([0, 0, 180])
-            translate([-4, 0, 0])
-        lid_screw_opening(lid_thickness);
-}
+lidlocation = (bottom != 0) ? 100 : 0;
 
-// The clamp
+// The lid
+if (lid == 1) {
+    color("lightblue")
+    translate([lidlocation, 0, 0])
+    difference() {
+        union() {
+            translate([wall_thickness / 2, wall_thickness / 2, 0])
+                cube([length - (wall_thickness * 1.5) - 12, width - wall_thickness, lid_thickness]);
+            
+            // Clamp  to hold the relay board in place.
+            translate([length - wall_thickness - 35, wall_thickness + nozzle_diameter, lid_thickness])
+                cube([35 - 12, width - (wall_thickness * 2) - (nozzle_diameter * 2),  lower_part_height - (1 + relay_standoff + 2 + lid_thickness)]);
+        }
+        translate([length - wall_thickness - 35, wall_thickness + nozzle_diameter + 2.5, lid_thickness])
+            cube([35 - 12, width - ((wall_thickness + nozzle_diameter + 2.5) * 2), lower_part_height - (1 + relay_standoff + 2 + lid_thickness)]);
+        
+            // Top cover screw receivers
+        translate([wall_thickness, wall_thickness, 0])
+            lid_screw_opening(lid_thickness);
+        translate([length - wall_thickness - 35 - 4, wall_thickness, 0])
+            lid_screw_opening(lid_thickness);
+        translate([wall_thickness, width - wall_thickness, 0])
+            rotate([0, 0, 180])
+                translate([-4, 0, 0])
+            lid_screw_opening(lid_thickness);
+        translate([length - wall_thickness - 35 - 4, width - wall_thickness, 0])
+            rotate([0, 0, 180])
+                translate([-4, 0, 0])
+            lid_screw_opening(lid_thickness);
+    }
+}
