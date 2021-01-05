@@ -60,8 +60,8 @@ func main() {
 	// Setup the button handler to toggle the pin.
 	http.HandleFunc("/press", buttonHandler)
 
-	cert := flag.String("cert", "/etc/ssl/certs/pigaragedoor.pem", "The certificate for this server.")
-	certkey := flag.String("key", "/etc/ssl/certs/pigaragedoor-key.pem", "The key for the server cert.")
+	cert := flag.String("cert", "/etc/ssl/certs/pigaragedoor/cert.pem", "The certificate for this server.")
+	certkey := flag.String("key", "/etc/ssl/certs/pigaragedoor/key.pem", "The key for the server cert.")
 
 	_, certerr := os.Stat(*cert)
 	_, keyerr := os.Stat(*certkey)
