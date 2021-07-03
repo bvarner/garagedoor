@@ -99,7 +99,7 @@ static ssize_t pigaragedoor_show_switch_a(struct device *dev, struct device_attr
 	}
 	return len;
 }
-static DEVICE_ATTR(button, S_IRUGO, pigaragedoor_show_switch_a, NULL);
+static DEVICE_ATTR(switch_a, S_IRUGO, pigaragedoor_show_switch_a, NULL);
 
 
 static ssize_t pigaragedoor_show_switch_b(struct device *dev, struct device_attribute *attr, char *buf) {
@@ -112,7 +112,7 @@ static ssize_t pigaragedoor_show_switch_b(struct device *dev, struct device_attr
 	}
 	return len;
 }
-static DEVICE_ATTR(button, S_IRUGO, pigaragedoor_show_switch_b, NULL);
+static DEVICE_ATTR(switch_b, S_IRUGO, pigaragedoor_show_switch_b, NULL);
 
 
 static ssize_t pigaragedoor_show_statemask(struct device *dev, struct device_attribute *attr, char *buf) {
