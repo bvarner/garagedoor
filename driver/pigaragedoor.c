@@ -50,8 +50,6 @@ static DECLARE_WAIT_QUEUE_HEAD(garagedoor_rq);
 
 static int pigaragedoor_set_state(struct pigaragedoor_data *garagedoor) {
 	pr_info("  %s\n", __FUNCTION__);
-	gpiod_set_value(garagedoor->gpiod_pwr_en, garagedoor->pwr_en);
-	
 	pr_info("    statemask: "BYTE_TO_BINARY_PATTERN"\n", BYTE_TO_BINARY(garagedoor->statemask));
 	gpiod_set_value(garagedoor->gpiod_relay_a,   (garagedoor->statemask & 0x80) ? 1 : 0);
 	pr_info("        relay_a:%d", (garagedoor->statemask & 0x80) ? 1 : 0);
@@ -276,20 +274,20 @@ static int pigaragedoor_probe(struct platform_device *pdev) {
 	
 	
 	// Obtain GPIOs from the device tree binding.
-	pigaragedoor_data->gpiod_relay_a = devm_gpiod_get(dev, "relay_a", GPIOD_OUT_HIGH);
+	pigaragedoor_data->gpiod_relay_a = devm_gpiod_get_index(dev, "relay", "0", GPIOD_OUT_HIGH);
 	if (IS_ERR(pigaragedoor_data->gpiod_relay_a)) {
 		dev_err(dev, "failed to get relay_a-gpiod: err=%ld\n", PTR_ERR(pigaragedoor_data->gpiod_relay_a));
 		return PTR_ERR(pigaragedoor_data->gpiod_relay_a);
 	}
 	
-	pigaragedoor_data->gpiod_relay_b = devm_gpiod_get_index(dev, "relay_b", 0, GPIOD_OUT_HIGH);
+	pigaragedoor_data->gpiod_relay_b = devm_gpiod_get_index(dev, "relay", 1, GPIOD_OUT_HIGH);
 	if (IS_ERR(pigaragedoor_data->gpiod_relay_b)) {
 		dev_err(dev, "failed to get relay_b-gpiod: err=%ld\n", PTR_ERR(pigaragedoor_data->gpiod_relay_b));
 		return PTR_ERR(pigaragedoor_data->gpiod_relay_b);
 	}
 	
 
-	pigaragedoor_data->gpiod_switch_a = devm_gpiod_get_index(dev, "switch_a", 0, GPIOD_IN);
+	pigaragedoor_data->gpiod_switch_a = devm_gpiod_get_index(dev, "input", 0, GPIOD_IN);
 	if (IS_ERR(pigaragedoor_data->gpiod_switch_a)) {
 		dev_err(dev, "failed to get switch_a-gpiod: err=%ld\n", PTR_ERR(pigaragedoor_data->gpiod_switch_a));
 		return PTR_ERR(pigaragedoor_data->gpiod_switch_a);
@@ -302,7 +300,7 @@ static int pigaragedoor_probe(struct platform_device *pdev) {
 	devm_request_irq(dev, pigaragedoor_data->irq_switch_a, pigaragedoor_handle_irq, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING, "pigaragedoor_switch_a", pigaragedoor_data);
 	
 	
-	pigaragedoor_data->gpiod_switch_b = devm_gpiod_get_index(dev, "switch_b", 0, GPIOD_IN);
+	pigaragedoor_data->gpiod_switch_b = devm_gpiod_get_index(dev, "input", 1, GPIOD_IN);
 	if (IS_ERR(pigaragedoor_data->gpiod_switch_b)) {
 		dev_err(dev, "failed to get switch_b-gpiod: err=%ld\n", PTR_ERR(pigaragedoor_data->gpiod_switch_b));
 		return PTR_ERR(pigaragedoor_data->gpiod_switch_b);
