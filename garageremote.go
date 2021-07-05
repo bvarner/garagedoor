@@ -14,9 +14,8 @@ import (
 var mutex *sync.Mutex
 var pin *rpi.Pin
 
-// Configured for Active Low.
-const ON = rpi.LOW
-const OFF = rpi.HIGH
+const ON = rpi.HIGH
+const OFF = rpi.LOW
 
 func redirectTLS(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "https://" + r.Host + r.RequestURI, http.StatusMovedPermanently)
@@ -46,7 +45,7 @@ func main() {
 	
 	// Open the output pin and set it high.
 	mutex.Lock()
-	pin, err = rpi.OpenPin(4, rpi.OUT)
+	pin, err = rpi.OpenPin(17, rpi.OUT)
 	if err != nil {
 		log.Fatal("Unable to open GPIO pin: ", err)
 	}
